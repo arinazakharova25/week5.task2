@@ -110,9 +110,9 @@ class Program
         var result2 = manager.GetStudentScore("MATH111", assignments, 67);
         var result3 = manager.GetStudentScore("SCI400", assignments, 93);
 
-        Console.WriteLine("CS101 Final Grade: " + result1);
-        Console.WriteLine("CS202 Final Grade: " + result2);
-        Console.WriteLine("CS303 Final Grade: " + result3);
+        Console.WriteLine("CS210 Final Grade: " + result1);
+        Console.WriteLine("MATH111 Final Grade: " + result2);
+        Console.WriteLine("SCI400 Final Grade: " + result3);
     }
 }
     
