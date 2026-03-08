@@ -76,3 +76,45 @@ public class ExamOnlyGrading : IGradeStrategy
     }
 }
 
+public class GradebookManager
+{
+    private Dictionary<string, IGradeStrategy> _strategies = new();
+
+    public void RegisterStrategy(string courseCode, IGradeStrategy strategy)
+    {
+        if (string.IsNullOrWhiteSpace(courseCode) || strategy == null)
+            throw new ArgumentNullException("Cannot be empty or null");
+        _strategies[courseCode] = strategy;
+    }
+
+    public double GetStudentScore(string courseCode, List<int> grades, int exam)
+    {
+        if (!_strategies.ContainsKey(courseCode))
+            throw new KeyNotFoundException("Invalid data");
+        return _strategies[courseCode].CalculateFinalGrade(grades, exam);
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        GradebookManager manager = new GradebookManager();
+
+        manager.RegisterStrategy("CS210", new StandardGrading());
+        manager.RegisterStrategy("MATH111", new PracticalGrading());
+        manager.RegisterStrategy("SCI400", new ExamOnlyGrading());
+
+        List<int> assignments = new List<int> { 80, 90, 64 };
+
+        var result1 = manager.GetStudentScore("CS210", assignments, 81);
+        var result2 = manager.GetStudentScore("MATH111", assignments, 67);
+        var result3 = manager.GetStudentScore("SCI400", assignments, 93);
+
+        Console.WriteLine("CS101 Final Grade: " + result1);
+        Console.WriteLine("CS202 Final Grade: " + result2);
+        Console.WriteLine("CS303 Final Grade: " + result3);
+    }
+}
+    
+
+
